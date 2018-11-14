@@ -7,6 +7,8 @@ import com.my.hello.dataobject.ProductCategory;
 import com.my.hello.dataobject.ProductInfo;
 import com.my.hello.service.ProductCategoryService;
 import com.my.hello.service.ProductInfoService;
+import com.my.hello.utils.ResultVOUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,25 +48,31 @@ public class BuyerProductController {
         List<ProductCategory>productCategoryList =
                 productCategoryService.findByCategoryTypeIn(integerList);
 
-
+        List<ProductVO> voList = new ArrayList<>();
         for(ProductCategory productCategory : productCategoryList){
             ProductVO productVO = new ProductVO();
             productVO.setCategoryname(productCategory.getCategoryName());
             productVO.setCategorytype(productCategory.getCategoryType());
-            //productVO.setVoList();
+
+            List<ProductInfoVO> productInfos = new ArrayList<>();
+            for(ProductInfo productInfo :infoList){
+                if(productInfo.getCategoryType().equals(productCategory.getCategoryType())){
+                    ProductInfoVO productInfoVO = new ProductInfoVO();
+                    BeanUtils.copyProperties(productInfo,productInfoVO);
+                    productInfos.add(productInfoVO);
+                }
+
+            }
+            productVO.setVoList(productInfos);
+            voList.add(productVO);
         }
 
         //3、数据拼装
-        ResultVO resultVO = new ResultVO();
-        resultVO.setCode(0);
-        resultVO.setMsg("成功");
-
-        ProductVO productVO = new ProductVO();
-        resultVO.setData(Arrays.asList(productVO));
-
-        ProductInfoVO productInfoVO = new ProductInfoVO();
-        productVO.setVoList(Arrays.asList(productInfoVO));
-        return resultVO;
+//        ResultVO resultVO = new ResultVO();
+//        resultVO.setCode(0);
+//        resultVO.setMsg("成功");
+//        resultVO.setData(voList);
+        return ResultVOUtil.success(voList);
     }
 
 
