@@ -3,6 +3,7 @@ package com.my.hello.controller;
 import com.my.hello.VO.ProductInfoVO;
 import com.my.hello.VO.ProductVO;
 import com.my.hello.VO.ResultVO;
+import com.my.hello.dataobject.ProductCategory;
 import com.my.hello.dataobject.ProductInfo;
 import com.my.hello.service.ProductCategoryService;
 import com.my.hello.service.ProductInfoService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 买家商品
@@ -32,16 +34,25 @@ public class BuyerProductController {
 
         //1、查询所有的商品
         List<ProductInfo> infoList = productInfoService.findUpAll();
+
         //2、查询类目,一次性查询
         List<Integer>integerList = new ArrayList<>();
-        /** 传统方法*/
         for (ProductInfo productInfo : infoList){
              integerList.add(productInfo.getCategoryType());
         }
-        productCategoryService.findByCategoryTypeIn(integerList);
+
+//        List<Integer>integerList =
+//                infoList.stream().map(e ->e.getCategoryType()).collect(Collectors.toList());
+        List<ProductCategory>productCategoryList =
+                productCategoryService.findByCategoryTypeIn(integerList);
 
 
-
+        for(ProductCategory productCategory : productCategoryList){
+            ProductVO productVO = new ProductVO();
+            productVO.setCategoryname(productCategory.getCategoryName());
+            productVO.setCategorytype(productCategory.getCategoryType());
+            //productVO.setVoList();
+        }
 
         //3、数据拼装
         ResultVO resultVO = new ResultVO();
