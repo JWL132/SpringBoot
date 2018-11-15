@@ -41,11 +41,11 @@ public class ProductInfoServiceImplTest {
     /** 管理员分页查询*/
     @Test
     public void findAll() {
-        PageRequest pageRequest = new PageRequest(0,2);
-        Page<ProductInfo> productInfoList = repository.findAll(pageRequest);
-        //System.out.println(productInfoList.getTotalElements());
-        /** 不等于0 */
-        Assert.assertNotEquals(0,productInfoList.getTotalElements());
+//        PageRequest pageRequest = new PageRequest(0,2);
+//        Page<ProductInfo> productInfoList = repository.findAll(pageRequest);
+//        //System.out.println(productInfoList.getTotalElements());
+//        /** 不等于0 */
+//        Assert.assertNotEquals(0,productInfoList.getTotalElements());//
     }
 
     /** 保存操作*/
