@@ -1,13 +1,17 @@
 package com.my.hello.service.impl;
 
 import com.my.hello.dataobject.ProductInfo;
+import com.my.hello.dto.CartDTO;
 import com.my.hello.enums.ProductStatusEnum;
+import com.my.hello.enums.ResultEnum;
+import com.my.hello.exception.SellException;
 import com.my.hello.repository.ProductInfoRepository;
 import com.my.hello.service.ProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,5 +42,27 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     @Override
     public ProductInfo save(ProductInfo productInfo) {
         return repository.save(productInfo);
+    }
+
+    @Override
+    public void increaseStock(List<CartDTO> cartDTOList) {
+
+    }
+
+    @Override
+    @Transactional
+    public void decreaseStock(List<CartDTO> cartDTOList) {
+        for(CartDTO cartDTO : cartDTOList){
+           ProductInfo productInfo = repository.findById(cartDTO.getProductId()).orElse(null);
+           if(productInfo == null){
+                throw  new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+           }
+           Integer result = productInfo.getProductStock()-cartDTO.getProductQuantity();
+            if(result<0){
+                throw  new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+            }
+            productInfo.setProductStock(result);
+            repository.save(productInfo);
+        }
     }
 }

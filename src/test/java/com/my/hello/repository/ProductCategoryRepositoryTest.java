@@ -20,8 +20,8 @@ public class ProductCategoryRepositoryTest {
 
         ProductCategory productCategory = new ProductCategory();
         //productCategory.setCategoryId();
-        productCategory.setCategoryName("女生最爱");
-        productCategory.setCategoryType(3);
+        productCategory.setCategoryName("是爱");
+        productCategory.setCategoryType(4);
         ProductCategory productCategory1 = repository.save(productCategory);
     }
 }

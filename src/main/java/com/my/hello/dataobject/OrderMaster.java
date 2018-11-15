@@ -2,15 +2,20 @@ package com.my.hello.dataobject;
 import com.my.hello.enums.OrderStatusEnum;
 import com.my.hello.enums.PayStatusEnum;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
+@DynamicUpdate
 @Data
 public class OrderMaster {
 
     /** 订单Id*/
+    @Id
     private  String orderId;
 
     /** 买家姓名*/

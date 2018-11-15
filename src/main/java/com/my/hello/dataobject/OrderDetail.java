@@ -14,7 +14,7 @@ public class OrderDetail {
     private  String detailId;
 
     /** 订单ID */
-    private  Integer orderId;
+    private  String orderId;
 
     /** 商品ID */
     private  String  productId;
@@ -34,7 +34,7 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-    public OrderDetail(String detailId, Integer orderId, String productId, String productName, BigDecimal productPrice, Integer productQuantity, String productIcon) {
+    public OrderDetail(String detailId, String orderId, String productId, String productName, BigDecimal productPrice, Integer productQuantity, String productIcon) {
         this.detailId = detailId;
         this.orderId = orderId;
         this.productId = productId;

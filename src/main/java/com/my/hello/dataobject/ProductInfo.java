@@ -1,6 +1,7 @@
 package com.my.hello.dataobject;
 
 import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
