@@ -44,19 +44,31 @@ public class ProductInfoServiceImpl implements ProductInfoService{
         return repository.save(productInfo);
     }
 
+    /** */
     @Override
-    @Transactional
+    @Transactional //事务回滚,如果某一条失败,那么都将重新获取
     public void increaseStock(List<CartDTO> cartDTOList) {
         for(CartDTO cartDTO : cartDTOList) {
             ProductInfo productInfo = repository.findById(cartDTO.getProductId()).orElse(null);
             if(productInfo == null){
+                /**
+                 * 如果ProductInfo里面为空,那么将抛出一个异常 "商品不存在"
+                 */
                 throw  new SellException(ResultEnum.PRODUCT_NOT_EXIST);
                 }
+            /**
+             * 定义一个变量用于接收返回的库存,订单表里面库存减去用户下单的数量
+             */
             Integer result = productInfo.getProductStock()+cartDTO.getProductQuantity();
+            /**
+             * 将订单表的库存 设置为新的状态
+             */
             productInfo.setProductStock(result);
+            /**
+             * 将新库存设置进去
+             */
             repository.save(productInfo);
             }
-
         }
 
     @Override
@@ -65,13 +77,25 @@ public class ProductInfoServiceImpl implements ProductInfoService{
         for(CartDTO cartDTO : cartDTOList){
            ProductInfo productInfo = repository.findById(cartDTO.getProductId()).orElse(null);
            if(productInfo == null){
+               /**
+                * 如果ProductInfo里面为空,那么将抛出一个异常 "商品不存在"
+                */
                 throw  new SellException(ResultEnum.PRODUCT_NOT_EXIST);
            }
            Integer result = productInfo.getProductStock()-cartDTO.getProductQuantity();
             if(result<0){
+                /**
+                 * 如果返回的订单数量大于库存的数量,那么将抛出一个异常 "库存不足,请稍后下单"
+                 */
                 throw  new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
             }
+            /**
+             * 将订单表的库存 设置为新的状态
+             */
             productInfo.setProductStock(result);
+            /**
+             * 将新库存设置进去
+             */
             repository.save(productInfo);
         }
     }

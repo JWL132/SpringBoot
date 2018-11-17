@@ -80,10 +80,15 @@ public class OrderMasterServiceImplTest {
     /** 完结订单*/
     @Test
     public void finish() {
+
+        OrderDTO orderDTO = orderMasterService.findOne("1542337924043362069");
+        OrderDTO orderDTO1 = orderMasterService.finish(orderDTO);
     }
 
     /** 支付订单*/
     @Test
     public void paid() {
+        OrderDTO orderDTO = orderMasterService.findOne("1542337924043362069");
+        OrderDTO orderDTO1 = orderMasterService.paid(orderDTO);
     }
 }
