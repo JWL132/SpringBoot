@@ -23,4 +23,7 @@ public interface OrderMasterService {
 
     /** 支付订单*/
     OrderDTO paid(OrderDTO orderDTO);
+
+    /** 查询所有人订单列表*/
+    Page<OrderDTO> findList( Pageable pageable);
 }

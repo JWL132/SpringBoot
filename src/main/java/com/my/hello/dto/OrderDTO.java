@@ -1,8 +1,12 @@
 package com.my.hello.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.my.hello.dataobject.OrderDetail;
+import com.my.hello.utils.seriallizer.Date2longSerializer;
 import lombok.Data;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +14,8 @@ import java.util.List;
  * 数据传输对象,在各个层传输用
  */
 @Data
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
     /** 订单Id*/
@@ -37,15 +43,16 @@ public class OrderDTO {
     private  Integer payStatus;
 
     /** 创建时间*/
+    @JsonSerialize(using = Date2longSerializer.class)
     private Date createTime;
 
     /** 更新时间*/
+    @JsonSerialize(using = Date2longSerializer.class)
     private Date updateTime;
 
     List<OrderDetail> orderDetailList;
 
-    public OrderDTO() {
-    }
+
 
 
 }

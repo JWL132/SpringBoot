@@ -91,4 +91,10 @@ public class OrderMasterServiceImplTest {
         OrderDTO orderDTO = orderMasterService.findOne("1542337924043362069");
         OrderDTO orderDTO1 = orderMasterService.paid(orderDTO);
     }
+
+    @Test
+    public  void  list(){
+        PageRequest pageRequest = new PageRequest(0,1);
+        Page<OrderDTO>orderDTOPage= orderMasterService.findList(pageRequest);
+    }
 }

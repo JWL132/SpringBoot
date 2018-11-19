@@ -84,8 +84,9 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         }
         //3、写入订单数据库 OrderMaster OrderDetail
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(random);
         BeanUtils.copyProperties(orderDTO,orderMaster);
-        orderMaster.setOrderId(random); //OrderMaster表的 OrderId是随机生成,这里放的是一个随机数
+        //OrderMaster表的 OrderId是随机生成,这里放的是一个随机数
         orderMaster.setOrderAmount(bigDecimal);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode()); //
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
@@ -218,5 +219,13 @@ public class OrderMasterServiceImpl implements OrderMasterService {
             throw  new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
         return orderDTO;
+    }
+
+    @Override
+    public Page<OrderDTO> findList(Pageable pageable) {
+       Page<OrderMaster> orderMasterPage = repository.findAll(pageable);
+        List<OrderDTO> orderDTOList = OrderMasterOrderDTOConverter.convert(orderMasterPage.getContent());
+
+        return  new PageImpl<OrderDTO>(orderDTOList,pageable,orderMasterPage.getTotalElements());
     }
 }
